@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model categoria{
+  id Int @id @default(autoincrement())
+  nombre String
+  slug String @unique
+  receta receta[]
+}
+
+model receta{
+  id Int @id @default(autoincrement())
+  nombre String
+  slug String @unique
+  tiempo String
+  descripcion String @db.LongText
+  fecha DateTime  @default(now())
+  foto String
+  categoria categoria @relation(fields: [categoria_id], references: [id])
+  categoria_id Int
+  usuario usuario @relation(fields: [usuario_id], references: [id])
+  usuario_id Int @default(1)
+}
+model contacto{
+  id Int @id @default(autoincrement())
+  nombre String
+  correo String
+  telefono String
+  mensaje String @db.LongText
+  fecha DateTime  @default(now())
+}
+
+model estado{
+  id Int @id @default(autoincrement())
+  nombre String
+  usuario usuario[]
+}
+
+model usuario{
+  id Int @id @default(autoincrement())
+  nombre String
+  correo String @unique
+  password String
+  token String
+  estado estado @relation(fields: [estado_id], references: [id])
+  estado_id Int @default(2)
+  receta receta[]
+}
+
+
