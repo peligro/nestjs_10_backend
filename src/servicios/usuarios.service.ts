@@ -87,7 +87,7 @@ export class UsuariosService {
                         estado_id: 1
                     }
                 });
-            return response.redirect('http://192.168.1.88/login');
+            return response.redirect('http://192.168.1.88:5173/login');
         }
     }
     async getLogin(correo: string, password: string) {
