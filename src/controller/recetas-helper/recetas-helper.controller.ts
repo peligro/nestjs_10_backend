@@ -64,6 +64,7 @@ export class RecetasHelperController
         return array;
     }
     @Post(':id')
+    @HttpCode(HttpStatus.OK)
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage(
             {

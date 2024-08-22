@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Req, Res } from '@nestjs/common';
 import { RegistroDto } from 'src/dto/registro.dto';
 import { UsuariosService } from 'src/servicios/usuarios.service';
 import { Request, Response } from 'express';
@@ -12,6 +12,7 @@ export class UsuariosController
     
 
     @Post('login')
+    @HttpCode(HttpStatus.OK)
     async login(@Body() dto: LoginDto)
     {
         return this.usuariosService.getLogin(dto.correo, dto.password);
@@ -25,6 +26,7 @@ export class UsuariosController
     }
      
     @Post('registro')
+    @HttpCode(HttpStatus.CREATED)
     registro(@Body() dto: RegistroDto, @Req() request: Request)
     {
         return this.usuariosService.addDatos(dto, request);
