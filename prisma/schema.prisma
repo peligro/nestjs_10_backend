@@ -26,20 +26,21 @@ model receta{
   slug String @unique
   tiempo String
   descripcion String @db.LongText
-  fecha DateTime  @default(now())
-  foto String
+  fecha DateTime @default(now())
+  foto String 
   categoria categoria @relation(fields: [categoria_id], references: [id])
   categoria_id Int
   usuario usuario @relation(fields: [usuario_id], references: [id])
   usuario_id Int @default(1)
 }
+
 model contacto{
   id Int @id @default(autoincrement())
   nombre String
   correo String
   telefono String
-  mensaje String @db.LongText
-  fecha DateTime  @default(now())
+  mensaje String
+  fecha DateTime @default(now())
 }
 
 model estado{

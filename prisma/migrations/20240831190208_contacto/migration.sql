@@ -4,7 +4,7 @@ CREATE TABLE `contacto` (
     `nombre` VARCHAR(191) NOT NULL,
     `correo` VARCHAR(191) NOT NULL,
     `telefono` VARCHAR(191) NOT NULL,
-    `mensaje` LONGTEXT NOT NULL,
+    `mensaje` VARCHAR(191) NOT NULL,
     `fecha` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)

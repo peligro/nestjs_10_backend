@@ -1,5 +1,5 @@
-export interface EjemploInterface {
-    
-    estado: string;
-    mensaje: string;
-} 
+export interface EjemploInterface 
+{
+    estado:string;
+    mensaje:string;
+}

@@ -1,147 +1,179 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import slugify from 'slugify';//npm i slugify
+import slugify from 'slugify';
 import { CategoriaDto } from 'src/dto/categoria.dto';
+
 @Injectable()
-export class CategoriasService {
-    private prisma: any;
-    constructor() {
-        this.prisma = new PrismaClient();
+export class CategoriasService 
+{
+
+    private prisma:any;
+    constructor()
+    {
+        this.prisma=new PrismaClient();
     }
-    async getDatos() {
-        return await this.prisma.categoria.findMany
-            (
-                {
-                    orderBy: [{ id: 'desc' }]
-                }
-            );
-    }
-    async getDato(id: any) {
-        let datos = await this.prisma.categoria.findFirst(
+
+
+    async getDatos()
+    {
+        return await this.prisma.categoria.findMany(
             {
-                where:
-                {
-                    id: id
-                }
+                orderBy:[{id:'desc'}]
             });
-        if (!datos) {
+    }
+    async getDato(id:any)
+    {
+        let datos = await this.prisma.categoria.findFirst(
+        {
+            where:
+            {
+                id:id
+            }
+        });
+        if(!datos)
+        {
             throw new HttpException(
                 {
                     estado: HttpStatus.BAD_REQUEST,
-                    error: 'El registro no existe en el sistema',
-                },
-                HttpStatus.BAD_REQUEST, {
-                cause:
+                    error:"El registro no existe en el sistema"//Ocurrió un error inesperado                    
+                },HttpStatus.BAD_REQUEST, 
                 {
-                    name: "",
-                    message: ""
+                    cause:
+                    {
+                        name:"",
+                        message:""
+                    }
                 }
-            });
-        } else {
+            );
+        }else
+        {
             return datos;
         }
     }
-    async addDatos(dto: CategoriaDto) {
-        let existe = await this.prisma.categoria.findFirst(
+
+    async addDatos(dto: CategoriaDto)
+    {
+        let existe=await this.prisma.categoria.findFirst(
             {
                 where:
                 {
-                    nombre: dto.nombre
+                    nombre:dto.nombre
                 }
             });
-        if (existe) {
+        if(existe)
+        {
             throw new HttpException(`El registro ${dto.nombre} ya existe en el sistema`, HttpStatus.BAD_REQUEST);
-        } else {
-            await this.prisma.categoria.create
-                (
-                    {
-                        data:
-                        {
-                            nombre: dto.nombre,
-                            slug: slugify(dto.nombre.toLowerCase())
-                        }
-                    }
-                );
-            return { estado: "ok", mensaje: "Se crea el registro exitosamente" }
         }
-    }
-    async updateDatos(id: any, dto: CategoriaDto) {
-        let datos = await this.prisma.categoria.findFirst(
+        await this.prisma.categoria.create(
             {
-                where:
+                data:
                 {
-                    id: id
+                    nombre: dto.nombre,
+                    slug:slugify(dto.nombre.toLowerCase())
                 }
             });
-        if (!datos) {
+        return {estado: 'ok', mensaje:'Se crea el registro exitosamente'}
+    }
+    /*
+    async addDatos(dto: CategoriaDto)
+    {
+        await this.prisma.categoria.create(
+            {
+                data:
+                {
+                    nombre: dto.nombre,
+                    slug:slugify(dto.nombre.toLowerCase())
+                }
+            });
+        return {estado: 'ok', mensaje:'Se crea el registro exitosamente'}
+    }
+    */
+   async updateDatos(id: any, dto:CategoriaDto)
+   {
+    let datos = await this.prisma.categoria.findFirst(
+        {
+            where:
+            {
+                id:id
+            }
+        });
+        if(!datos)
+        {
             throw new HttpException(
                 {
                     estado: HttpStatus.BAD_REQUEST,
-                    error: 'El registro no existe en el sistema',
-                },
-                HttpStatus.BAD_REQUEST, {
-                cause:
+                    error:"El registro no existe en el sistema"//Ocurrió un error inesperado                    
+                },HttpStatus.BAD_REQUEST, 
                 {
-                    name: "",
-                    message: ""
-                }
-            });
-        } else {
-            await this.prisma.categoria.update(
-                {
-                    where:
+                    cause:
                     {
-                        id: id
-                    },
-                    data:
-                    {
-                        nombre: dto.nombre,
-                        slug: slugify(dto.nombre.toLowerCase())
+                        name:"",
+                        message:""
                     }
-                });
-            return { estado: "ok", mensaje: "Se modificó el registro exitosamente" }
+                }
+            );
         }
-    }
-    async deleteDato(id: any) {
-        let existe = await this.prisma.categoria.findFirst(
+        await this.prisma.categoria.update(
             {
                 where:
                 {
-                    id: id
+                    id:id
+                },
+                data:
+                {
+                    nombre: dto.nombre,
+                    slug:slugify(dto.nombre.toLowerCase())
                 }
             });
-        if (!existe) {
+        return {estado: 'ok', mensaje:'Se modifica el registro exitosamente'}
+   }
+
+   async deleteDato(id:any)
+   {
+    let datos = await this.prisma.categoria.findFirst(
+        {
+            where:
+            {
+                id:id
+            }
+        });
+        if(!datos)
+        {
             throw new HttpException(
                 {
                     estado: HttpStatus.BAD_REQUEST,
-                    error: 'Ocurrió un error inesperado',
-                },
-                HttpStatus.BAD_REQUEST, {
-                cause:
+                    error:"El registro no existe en el sistema"//Ocurrió un error inesperado                    
+                },HttpStatus.BAD_REQUEST, 
                 {
-                    name: "",
-                    message: ""
+                    cause:
+                    {
+                        name:"",
+                        message:""
+                    }
                 }
-            });
+            );
         }
-        let datos = await this.prisma.receta.findMany(
+        let existe=await this.prisma.receta.findMany(
             {
                 where:
                 {
-                    categoria_id: id
+                    categoria_id:id
                 }
             });
-        if (datos.length == 0) {
+        if(existe.length==0)
+        {
             await this.prisma.categoria.delete(
                 {
                     where:
                     {
-                        id: id
+                        id:id
                     }
                 });
-            return { estado: 'ok', mensaje: 'Se eliminó el registro exitosamente' }
-        } else {
-            throw new HttpException(`No es posible eliminar el registro en este momento`, HttpStatus.BAD_REQUEST);
+            return {estado: 'ok', mensaje:'Se elimina el registro exitosamente'}
+        }else
+        {
+            throw new HttpException(`Ocurrió un error inesperado, o no se pudo borrar el registro`, HttpStatus.BAD_REQUEST);
         }
-    }
+
+   }
 }

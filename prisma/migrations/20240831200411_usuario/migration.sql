@@ -4,6 +4,7 @@ CREATE TABLE `usuario` (
     `nombre` VARCHAR(191) NOT NULL,
     `correo` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
+    `token` VARCHAR(191) NOT NULL,
     `estado_id` INTEGER NOT NULL DEFAULT 2,
 
     UNIQUE INDEX `usuario_correo_key`(`correo`),

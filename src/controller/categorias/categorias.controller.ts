@@ -5,32 +5,43 @@ import { CategoriasService } from 'src/servicios/categorias.service';
 
 @Controller('categorias')
 @ApiTags("Categorías")
-export class CategoriasController {
-    constructor(private categoriasService: CategoriasService) { }
+export class CategoriasController 
+{
 
+    constructor(private categoriaService:CategoriasService){}
 
     @Get()
     @HttpCode(HttpStatus.OK)
-    index() {
-        return this.categoriasService.getDatos();
+    index()
+    {
+        return this.categoriaService.getDatos();
     }
+
     @Get(':id')
     @HttpCode(HttpStatus.OK)
-    show(@Param() params) {
-        return this.categoriasService.getDato(parseInt(params.id));
+    show(@Param() params)
+    {
+        return this.categoriaService.getDato(parseInt(params.id));
     }
+
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    create(@Body() dto: CategoriaDto) {
-        return this.categoriasService.addDatos(dto);
+    create(@Body() dto:CategoriaDto)
+    {
+        return this.categoriaService.addDatos(dto);
     }
+
     @Put(':id')
-    update(@Param() params, @Body() dto: CategoriaDto) {
-        return this.categoriasService.updateDatos(parseInt(params.id), dto);
+    @HttpCode(HttpStatus.OK)
+    update(@Param() params, @Body() dto:CategoriaDto)
+    {
+        return this.categoriaService.updateDatos(parseInt(params.id), dto)
     }
+
     @Delete(':id')
+    @HttpCode(HttpStatus.OK)
     destroy(@Param() params)
     {
-        return this.categoriasService.deleteDato(parseInt(params.id));
+        return this.categoriaService.deleteDato(parseInt(params.id));
     }
 }

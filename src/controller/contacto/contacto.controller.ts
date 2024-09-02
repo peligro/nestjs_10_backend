@@ -8,11 +8,12 @@ import { ContactoService } from 'src/servicios/contacto.service';
 export class ContactoController 
 {
     constructor(private contactoService:ContactoService){}
-    
+
     @Post()
     @UsePipes(new ValidationPipe())
     @HttpCode(HttpStatus.CREATED)
-    create(@Body() dto: ContactoDto) {
+    create(@Body() dto:ContactoDto)
+    {
         return this.contactoService.addDatos(dto);
     }
 }

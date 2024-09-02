@@ -5,7 +5,8 @@ CREATE TABLE `receta` (
     `slug` VARCHAR(191) NOT NULL,
     `tiempo` VARCHAR(191) NOT NULL,
     `descripcion` LONGTEXT NOT NULL,
-    `foto` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `fecha` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `foto` VARCHAR(191) NOT NULL,
     `categoria_id` INTEGER NOT NULL,
 
     UNIQUE INDEX `receta_slug_key`(`slug`),
